@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">TODO App</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+    </div>
+</nav>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center">Create Task</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Task Name:</label>
+                            <input type="text" class="form-control" id="name" name="task" required>
+                            <div class="invalid-feedback">
+                                Please enter a task name.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="priority" class="form-label">Priority:</label>
+                            <input type="number" class="form-control" id="priority" name="priority" required>
+                            <div class="invalid-feedback">
+                                Please enter a priority value.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="due_date" class="form-label">Due Date:</label>
+                            <input type="date" class="form-control" id="due_date" name="due_date">
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block">Create Task</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Task List Card -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h2 class="text-center">Task List</h2>
+                </div>
+                <div class="card-body">
+                    {% for task in fetch %}
+                        <div class="mb-3">
+                            <strong>{{ task.name }}</strong>
+                            <br>
+                            Priority: {{ task.priority }}
+                            <br>
+                            Due Date: {{ task.due_date }}
+                            <br>
+                            <button class="btn btn-primary btn-sm" onclick="location.href='{% url 'update' task.id %}'">edit</button>
+
+                            <button class="btn btn-primary btn-sm" onclick="location.href='{% url 'dlt' task.id %}'">Done</button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
